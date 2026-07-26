@@ -1,0 +1,19 @@
+{
+  "name": "energy-tech-crane-unified",
+  "version": "2.0.0",
+  "description": "Energy Tech Crane — Unified Website + ERP Server",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "start":    "node server.js",
+    "dev":      "node server.js",
+    "build:erp":"cd erp-client && node build.js"
+  },
+  "dependencies": {
+    "pdf-lib":  "^1.17.1",
+    "docx":     "^9.6.1",
+    "mysql2":   "^3.11.0",
+    "dotenv":   "^16.4.5"
+  }
+}
