@@ -1,0 +1,17 @@
+{
+  "name": "etc-erp-client",
+  "version": "1.0.0",
+  "description": "Energy Tech Crane ERP - Frontend (React)",
+  "private": true,
+  "scripts": {
+    "build": "node build.js",
+    "dev-note": "This prototype's build.js uses a locally-located esbuild. On your own machine with internet access, run: npm install esbuild react react-dom, then npm run build."
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}

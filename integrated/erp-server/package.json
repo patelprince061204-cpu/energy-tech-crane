@@ -1,0 +1,20 @@
+{
+  "name": "etc-erp-server",
+  "version": "1.0.0",
+  "description": "Energy Tech Crane ERP",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "docx": "^9.6.1",
+    "mysql2": "^3.11.0",
+    "dotenv": "^16.4.5"
+  }
+}

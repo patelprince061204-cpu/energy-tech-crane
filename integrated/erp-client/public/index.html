@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energy Tech Crane ERP</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><rect width=%2224%22 height=%2224%22 rx=%224%22 fill=%22%23E8A93C%22/><path d=%22M4 19h16M6 19V9l6-5 6 5v10M9 19v-6h6v6%22 stroke=%22%231C2530%22 stroke-width=%222.5%22 fill=%22none%22/></svg>" />
+
+  <!-- Tailwind: served locally from this app (not from cdn.tailwindcss.com) so the
+       app works with no internet access. Same JIT engine, just self-hosted. -->
+  <script src="./tailwindcss.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0', 300: '#cbd5e1',
+              400: '#94a3b8', 500: '#64748b', 600: '#475569', 700: '#334155',
+              800: '#1e293b', 900: '#0f172a',
+            },
+            amber: {
+              50: '#fffbeb', 100: '#fef3c7', 200: '#fde9b8', 300: '#fcd984',
+              400: '#f7c14e', 500: '#E8A93C', 600: '#d6912a', 700: '#b3741f',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Google Fonts: optional cosmetic enhancement. If unreachable (offline / blocked),
+       the browser silently falls back to the system font stack defined in styles.css. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./app.css" />
+</head>
+<body class="font-sans antialiased text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900">
+  <div id="root"></div>
+  <script src="./app.js"></script>
+</body>
+</html>

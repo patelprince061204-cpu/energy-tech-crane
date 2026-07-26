@@ -1,0 +1,351 @@
+/* src/styles.css */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+/* ── Dark mode: override Tailwind's slate palette so every text-slate-*
+   class automatically becomes readable on dark backgrounds, without
+   needing to add dark:text- to every JSX file individually.
+   Tailwind's JIT generates CSS like: .text-slate-800 { color: #1e293b }
+   We override those values inside the .dark selector so the same class
+   produces a light colour instead.                                        */
+.dark body { background-color: #0f172a; color: #e2e8f0; }
+
+.dark .text-slate-900 { color: #f8fafc !important; }
+.dark .text-slate-800 { color: #f1f5f9 !important; }
+.dark .text-slate-700 { color: #e2e8f0 !important; }
+.dark .text-slate-600 { color: #cbd5e1 !important; }
+.dark .text-slate-500 { color: #94a3b8 !important; }
+.dark .text-slate-400 { color: #64748b !important; }
+
+/* bg overrides so hardcoded bg-slate-* classes in pages also look right */
+.dark .bg-slate-50  { background-color: #1e293b !important; }
+.dark .bg-slate-100 { background-color: #1e293b !important; }
+.dark .bg-slate-200 { background-color: #334155 !important; }
+.dark .bg-white     { background-color: #1e293b !important; }
+
+/* border overrides */
+.dark .border-slate-100 { border-color: #334155 !important; }
+.dark .border-slate-200 { border-color: #334155 !important; }
+.dark .border-slate-300 { border-color: #475569 !important; }
+
+/* hover states so interactive bg overrides work correctly */
+.dark .hover\:bg-slate-50:hover  { background-color: #334155 !important; }
+.dark .hover\:bg-slate-100:hover { background-color: #334155 !important; }
+
+/* File inputs - the ::file-selector-button part needs explicit dark styling */
+.dark input[type="file"]                       { color: #cbd5e1; }
+.dark input[type="file"]::file-selector-button { background-color: #334155; color: #e2e8f0; border-color: #475569; }
+
+/* Back-link and secondary text colours used on detail pages */
+.dark .hover\:text-slate-600:hover { color: #cbd5e1 !important; }
+.dark .hover\:text-slate-800:hover { color: #f1f5f9 !important; }
+
+/* Scrollbars */
+::-webkit-scrollbar              { width: 8px; height: 8px; }
+::-webkit-scrollbar-track        { background: transparent; }
+::-webkit-scrollbar-thumb        { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover  { background: #94a3b8; }
+.dark ::-webkit-scrollbar-thumb       { background: #334155; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+.font-mono, code, .tabular-nums { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.animate-spin { animation: spin 1s linear infinite; }
+
+/* ════════════════════════════════════════════════════════════════════
+   MOBILE-FRIENDLY LAYER — every rule below is inside a max-width media
+   query, so screens ≥1024px (desktop) render EXACTLY as before.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Hamburger is invisible on desktop */
+.etc-hamburger { display: none; }
+.etc-overlay   { display: none; }
+
+@media (max-width: 1023px) {
+
+  /* ── Sidebar becomes an off-canvas drawer ─────────────────────────── */
+  .etc-sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 60;
+    width: 240px !important;           /* ignore collapsed 68px on mobile */
+    transform: translateX(-105%);
+    transition: transform 0.25s ease;
+    box-shadow: none;
+  }
+  .etc-sidebar-open {
+    transform: translateX(0);
+    box-shadow: 0 0 40px rgba(0,0,0,0.45);
+  }
+
+  /* Backdrop behind the drawer */
+  .etc-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    background: rgba(15, 23, 42, 0.55);
+  }
+
+  /* Show hamburger */
+  .etc-hamburger { display: inline-flex; flex-shrink: 0; }
+
+  /* Header: tighter padding, smaller gaps */
+  .etc-header { padding-left: 0.75rem; padding-right: 0.75rem; }
+
+  /* Main content: tighter padding */
+  .etc-main { padding: 1rem; }
+
+  /* Prevent iOS auto-zoom when focusing inputs (needs ≥16px font) */
+  .etc-main input, .etc-main select, .etc-main textarea,
+  .etc-header input { font-size: 16px; }
+
+  /* 4/5/6-column grids collapse to 2 columns on tablets/phones */
+  .etc-main .grid-cols-4,
+  .etc-main .grid-cols-5,
+  .etc-main .grid-cols-6 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+
+  /* Tables: guarantee horizontal scroll instead of squashing */
+  .etc-main .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+  .etc-main table { min-width: 640px; }
+}
+
+@media (max-width: 767px) {
+  /* Page-header rows (title + action buttons) can wrap instead of overflowing */
+  .etc-main .flex.items-center.justify-between { flex-wrap: wrap; row-gap: 0.5rem; }
+
+  /* Filter bars and button groups wrap */
+  .etc-main .flex.gap-2, .etc-main .flex.gap-3 { flex-wrap: wrap; }
+
+  /* 3-column grids also collapse to 2 */
+  .etc-main .grid-cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+@media (max-width: 639px) {
+  /* Phones: form grids stack to a single column for comfortable typing */
+  .etc-main .grid-cols-2,
+  .etc-main .grid-cols-3 { grid-template-columns: 1fr !important; }
+
+  /* Stat-card grids stay 2-up (set above) — looks right on phones */
+
+  /* Hide user name/role text + divider in header, keep avatar & buttons */
+  .etc-user-meta { display: none; }
+  .etc-divider   { display: none; }
+
+  /* Search box shrinks gracefully */
+  .etc-header .max-w-md { max-width: 100%; min-width: 0; }
+
+  /* Modals: use nearly full width, comfortable height */
+  .fixed.inset-0 .max-w-md,
+  .fixed.inset-0 .max-w-2xl,
+  .fixed.inset-0 .max-w-6xl { max-width: 100% !important; }
+}
+
+/* ── MOBILE LAYER v2 — card tables, full-screen modals, stacked editors ──
+   Still 100% inside media queries: desktop (≥1024px) untouched.            */
+
+@media (max-width: 1023px) {
+  /* Filter fields: comfortable 2-per-row on tablets */
+  .etc-filterbar .etc-filter-field { flex: 1 1 45%; min-width: 0 !important; }
+}
+
+@media (max-width: 767px) {
+  /* Filter fields: full width on phones */
+  .etc-filterbar .etc-filter-field { flex: 1 1 100%; }
+
+  /* ── Tables become stacked cards ────────────────────────────────────── */
+  .etc-table { margin-left: 0 !important; margin-right: 0 !important; overflow: visible; }
+  .etc-table table { min-width: 0 !important; display: block; width: 100%; }
+  .etc-table thead { display: none; }
+  .etc-table tbody { display: block; }
+  .etc-table tr {
+    display: block;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 4px 0;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(15,23,42,0.04);
+  }
+  .etc-table td {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 14px;
+    white-space: normal !important;
+    text-align: right;
+    border: none;
+  }
+  .etc-table td::before {
+    content: attr(data-label);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    flex-shrink: 0;
+    text-align: left;
+  }
+  .etc-table td.etc-check { justify-content: flex-end; padding-bottom: 0; }
+  .etc-table td.etc-check::before { content: 'Select'; }
+
+  /* Dark mode card styling */
+  .dark .etc-table tr { border-color: #334155 !important; background: #1e293b; }
+  .dark .etc-table td::before { color: #64748b; }
+}
+
+@media (max-width: 639px) {
+  /* ── Modals go full-screen on phones (easy scrolling & typing) ──────── */
+  .etc-modal-wrap { padding: 0; align-items: stretch; }
+  .etc-modal {
+    max-width: 100% !important;
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh !important;
+    border-radius: 0;
+  }
+
+  /* ── fullScreen editor (quotation templates): panels stack vertically ── */
+  .etc-fs-body   { flex-direction: column; overflow-y: auto; }
+  .etc-fs-editor { flex-direction: column; }
+  .etc-fs-nav {
+    width: 100% !important;
+    height: auto;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+    overflow-y: visible;
+  }
+  .dark .etc-fs-nav { border-bottom-color: #334155; }
+  .etc-fs-nav > div { display: flex; flex-wrap: wrap; gap: 4px; }
+  .etc-fs-nav > div > button { width: auto !important; }
+  .etc-fs-nav > div > div { width: 100%; display: flex; gap: 6px; }
+  .etc-fs-nav > div > div > button { width: auto !important; flex: 1; margin-top: 0 !important; }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   MOBILE LAYER 2 — phones (<640px): tables become stacked cards,
+   quotation spec rows stack vertically. Desktop & tablet unchanged.
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+
+  /* ── Data tables → stacked cards ─────────────────────────────────── */
+  .etc-table { margin-left: 0 !important; margin-right: 0 !important; overflow: visible !important; }
+  .etc-table table { display: block; width: 100% !important; min-width: 0 !important; }
+  .etc-table thead { display: none; }
+  .etc-table tbody { display: block; }
+  .etc-table tr {
+    display: block;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding: 4px 0;
+    background: #fff;
+  }
+  .dark .etc-table tr { border-color: #334155 !important; background: #1e293b; }
+  .etc-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 7px 14px !important;
+    white-space: normal !important;
+    text-align: right;
+    border: none !important;
+  }
+  .etc-table td::before {
+    content: attr(data-label);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #94a3b8;
+    text-align: left;
+    flex-shrink: 0;
+  }
+  .dark .etc-table td::before { color: #64748b; }
+  /* Cells without a label (action buttons, custom renders): right-align content only */
+  .etc-table td[data-label=""]::before { display: none; }
+  .etc-table td[data-label=""] { justify-content: flex-end; }
+  /* Row-select checkbox cell */
+  .etc-table td.etc-check { justify-content: flex-start; padding-bottom: 0 !important; }
+
+  /* ── Quotation/Estimation spec rows (label | input grids) stack ──── */
+  .etc-main .grid.items-start.py-2\.5 { grid-template-columns: 1fr !important; row-gap: 4px; }
+  .etc-main .grid.items-start.py-2\.5 > div:first-child { justify-content: flex-start !important; }
+
+  /* ── Modals: comfortable phone layout ────────────────────────────── */
+  .fixed.inset-0.z-50 { padding: 8px !important; }
+
+  /* ── Notification dropdown never wider than screen ───────────────── */
+  .etc-header .w-80 { max-width: calc(100vw - 24px); }
+
+  /* ── Buttons in page headers: comfortable tap size ───────────────── */
+  .etc-main button { min-height: 36px; }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   MOBILE LAYER 3 — professional polish for phones (<640px).
+   Full-screen modals, tidy page headers, clean filters & cards.
+   Desktop (≥1024px) and tablet table view untouched.
+   ════════════════════════════════════════════════════════════════════ */
+@media (max-width: 639px) {
+
+  /* ── Modals cover the ENTIRE screen (app-like) ───────────────────── */
+  .etc-modal-wrap.fixed.inset-0.z-50 { padding: 0 !important; align-items: stretch !important; justify-content: stretch !important; }
+  .etc-modal {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100dvh;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  /* Modal title bar: slightly taller, always pinned on top */
+  .etc-modal > div:first-child { padding: 14px 16px; z-index: 5; }
+  .etc-modal > .p-5 { flex: 1; padding: 16px 16px calc(16px + env(safe-area-inset-bottom)); }
+  /* Footer buttons (Cancel / Save) share the full width — easy thumb reach */
+  .etc-modal .justify-end.gap-2 > button,
+  .etc-modal .justify-end.gap-3 > button { flex: 1 1 0; min-height: 44px; }
+
+  /* Full-screen editors (Template Editor etc.): panels stack vertically */
+  .etc-fs-body { flex-direction: column !important; overflow-y: auto !important; }
+  .etc-fs-body > * { max-width: 100% !important; width: 100% !important; }
+
+  /* ── Page headers: title stacks above a neat 2-column button grid ── */
+  .etc-main > div > .flex.items-center.justify-between {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .etc-main > div > .flex.items-center.justify-between > .flex.gap-2,
+  .etc-main > div > .flex.items-center.justify-between > .flex.gap-3 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .etc-main > div > .flex.items-center.justify-between > .flex.gap-2 > *,
+  .etc-main > div > .flex.items-center.justify-between > .flex.gap-3 > * { width: 100%; }
+  .etc-main > div > .flex.items-center.justify-between > .flex.gap-2 > *:only-child,
+  .etc-main > div > .flex.items-center.justify-between > .flex.gap-3 > *:only-child { grid-column: 1 / -1; }
+  /* Buttons inside those grids fill their cell */
+  .etc-main > div > .flex.items-center.justify-between button { width: 100%; min-height: 40px; }
+
+  /* ── Filter panel: clean 2-column grid instead of ragged wrapping ── */
+  .etc-filterbar { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .etc-filterbar .etc-filter-field { min-width: 0 !important; width: 100%; }
+
+  /* ── Card tables: subtle depth + comfortable spacing ─────────────── */
+  .etc-table tr { box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06); margin-bottom: 12px; padding: 6px 0; }
+  .etc-table td { min-width: 0; }
+  .etc-table td > * { max-width: 100%; }
+
+  /* ── Drawer: respect phone safe areas ────────────────────────────── */
+  .etc-sidebar { padding-bottom: env(safe-area-inset-bottom); }
+}
